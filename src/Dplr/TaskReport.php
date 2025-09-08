@@ -26,7 +26,7 @@ class TaskReport
      */
     protected $task;
 
-    public function __construct(array $data, Task $task = null)
+    public function __construct(array $data, ?Task $task = null)
     {
         if (!isset($data['Type'])) {
             throw new \InvalidArgumentException('Not found `Type` parameter.');

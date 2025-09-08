@@ -3,14 +3,13 @@
 namespace Dplr\Tests;
 
 use Dplr\Task;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
 {
     public function testNoAction(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Not found `Action` parameter.');
 
         new Task([]);
@@ -18,7 +17,7 @@ class TaskTest extends TestCase
 
     public function testInvalidAction(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Action "aaa" not allowed. Allowed actions: ssh, scp.');
 
         new Task(['Action' => 'aaa']);
