@@ -4,7 +4,6 @@ namespace Dplr\Tests;
 
 use Dplr\Dplr;
 use Dplr\TaskReport;
-use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 
 class DplrTest extends TestCase
@@ -86,7 +85,7 @@ class DplrTest extends TestCase
 
     public function testExceptionOnSingleReportOutputWithSeveralTasks(): void
     {
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(\OutOfRangeException::class);
         $this->expectExceptionMessage('There are more than one task report.');
 
         $d = self::getDplr();

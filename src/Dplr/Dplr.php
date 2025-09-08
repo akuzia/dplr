@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Dplr;
 
-use DateTime;
-use InvalidArgumentException;
-use OutOfRangeException;
-use RuntimeException;
-
 /**
  * Object oriented deployer based on GoSSHa.
  *
@@ -60,9 +55,9 @@ class Dplr
     public function __construct(
         string $user,
         string $gosshaPath,
-        string $publicKey = null,
+        ?string $publicKey = null,
         int $maxSSHAgentConnections = 128,
-        int $maxConcurrency = 0
+        int $maxConcurrency = 0,
     ) {
         $this->user = $user;
         $this->publicKey = $publicKey;
@@ -95,7 +90,7 @@ class Dplr
     protected function checkState(): void
     {
         if (self::STATE_RUNNING === $this->state) {
-            throw new RuntimeException('Dplr is already running.');
+            throw new \RuntimeException('Dplr is already running.');
         }
     }
 
@@ -210,7 +205,7 @@ class Dplr
             $mainThreadCount = count($this->tasks[0]);
             $currentThreadCount = count($this->tasks[$this->multipleThread]);
             if ($mainThreadCount <= $currentThreadCount) {
-                throw new RuntimeException(sprintf('Thread #%d is bigger than main thread', $this->multipleThread));
+                throw new \RuntimeException(sprintf('Thread #%d is bigger than main thread', $this->multipleThread));
             }
 
             if ($currentThreadCount < $mainThreadCount - 1) {
@@ -230,16 +225,16 @@ class Dplr
      */
     public function command(
         string $command,
-        string $serverGroup = null,
-        int $timeout = null,
-        callable $onSuccess = null,
-        callable $onFailure = null
+        ?string $serverGroup = null,
+        ?int $timeout = null,
+        ?callable $onSuccess = null,
+        ?callable $onFailure = null,
     ): self {
         $servers = null;
         if (null !== $serverGroup) {
             $servers = $this->getServersByGroup($serverGroup);
             if (!count($servers)) {
-                throw new InvalidArgumentException(sprintf('Not found servers for group "%s"', $serverGroup));
+                throw new \InvalidArgumentException(sprintf('Not found servers for group "%s"', $serverGroup));
             }
         }
 
@@ -267,16 +262,16 @@ class Dplr
     public function upload(
         string $localFile,
         string $remoteFile,
-        string $serverGroup = null,
-        int $timeout = null,
-        callable $onSuccess = null,
-        callable $onFailure = null
+        ?string $serverGroup = null,
+        ?int $timeout = null,
+        ?callable $onSuccess = null,
+        ?callable $onFailure = null,
     ): self {
         $servers = null;
         if (null !== $serverGroup) {
             $servers = $this->getServersByGroup($serverGroup);
             if (!count($servers)) {
-                throw new InvalidArgumentException(sprintf('Not found servers for group "%s"', $serverGroup));
+                throw new \InvalidArgumentException(sprintf('Not found servers for group "%s"', $serverGroup));
             }
         }
 
@@ -302,7 +297,7 @@ class Dplr
     /*
      * Run tasks on servers.
      */
-    public function run(callable $callback = null): self
+    public function run(?callable $callback = null): self
     {
         $this->state = self::STATE_RUNNING;
 
@@ -380,11 +375,11 @@ class Dplr
     public function getSingleReportOutput(): ?string
     {
         if (!count($this->reports)) {
-            throw new OutOfRangeException('Not found task reports.');
+            throw new \OutOfRangeException('Not found task reports.');
         }
 
         if (count($this->reports) > 1) {
-            throw new OutOfRangeException('There are more than one task report.');
+            throw new \OutOfRangeException('There are more than one task report.');
         }
 
         /** @var TaskReport $report */
@@ -393,7 +388,7 @@ class Dplr
         return $report->getOutput();
     }
 
-    protected function runTasks(callable $callback = null): void
+    protected function runTasks(?callable $callback = null): void
     {
         $max = 0;
         // clear empty threads and search max thread
@@ -440,11 +435,11 @@ class Dplr
         foreach ($this->tasks as $i => $thread) {
             $processes[$i] = proc_open($pl, $descriptorSpec, $pipes[$i]);
             if (!is_resource($processes[$i])) {
-                throw new RuntimeException('Can not run GoSSHa.');
+                throw new \RuntimeException('Can not run GoSSHa.');
             }
         }
 
-        $this->timers['execution'] = new DateTime();
+        $this->timers['execution'] = new \DateTime();
 
         // run tasks
         for ($j = 0; $j < $max; ++$j) {
@@ -525,7 +520,7 @@ class Dplr
             }
         }
 
-        $this->timers['execution'] = $this->timers['execution']->diff(new DateTime());
+        $this->timers['execution'] = $this->timers['execution']->diff(new \DateTime());
 
         foreach ($pipes as $p) {
             foreach ($p as $pipe) {

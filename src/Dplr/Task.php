@@ -16,8 +16,8 @@ class Task implements \JsonSerializable
 
     public function __construct(
         array $parameters,
-        callable $onSuccess = null,
-        callable $onFailure = null
+        ?callable $onSuccess = null,
+        ?callable $onFailure = null,
     ) {
         if (!isset($parameters['Action'])) {
             throw new \InvalidArgumentException('Not found `Action` parameter.');

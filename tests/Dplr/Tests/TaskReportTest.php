@@ -4,14 +4,13 @@ namespace Dplr\Tests;
 
 use Dplr\Task;
 use Dplr\TaskReport;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class TaskReportTest extends TestCase
 {
     public function testNoType(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Not found `Type` parameter.');
 
         new TaskReport([]);
@@ -19,7 +18,7 @@ class TaskReportTest extends TestCase
 
     public function testInvalidType(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Type "aaa" not allowed. Allowed types: UserError, Reply, Timeout.');
 
         new TaskReport(['Type' => 'aaa']);
