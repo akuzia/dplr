@@ -1,4 +1,4 @@
-COMPOSE=docker-compose
+COMPOSE=docker compose
 PHP=$(COMPOSE) run --rm --no-deps dplr
 
 sshkeygen:

@@ -1,3 +1,3 @@
 FROM gotechnies/alpine-ssh
 
-COPY key.pub /root/.ssh/authorized_keys
+COPY id_rsa.pub /root/.ssh/authorized_keys
