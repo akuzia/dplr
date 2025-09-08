@@ -82,7 +82,7 @@ class TaskReport
 
     public function getOutput(): ?string
     {
-        if (!isset($this->data['Stdout']) && '' !== $this->data['StdOut']) {
+        if (!isset($this->data['Stdout']) || '' === $this->data['Stdout']) {
             return null;
         }
 

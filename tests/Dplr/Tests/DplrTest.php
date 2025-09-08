@@ -145,7 +145,7 @@ class DplrTest extends TestCase
 
         /** @var TaskReport $report */
         foreach ($d->getReports() as $report) {
-            if ('cat 2.txt' === $report->getTask()->getParameters()['Cmd']) {
+            if ('cat 2.txt' === ($report->getTask()->getParameters()['Cmd'] ?? '')) {
                 $this->assertFalse($report->isSuccessful());
             } else {
                 $this->assertTrue($report->isSuccessful());
