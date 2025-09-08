@@ -8,7 +8,7 @@ $finder = Finder::create()
     ->in(__DIR__ . '/tests')
 ;
 
-return Config::create()
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
@@ -40,3 +40,4 @@ return Config::create()
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/cache/.php_cs.cache');
+;

@@ -1,3 +1,5 @@
+ARG PHP_VERSION=7.3
+
 FROM golang:alpine AS gossha
 
 RUN apk --update --no-cache add --virtual build-dependencies \
@@ -5,7 +7,7 @@ RUN apk --update --no-cache add --virtual build-dependencies \
     && go install github.com/YuriyNasretdinov/GoSSHa@latest \
     && apk update && apk del build-dependencies
 
-FROM php:7.3-alpine
+FROM php:${PHP_VERSION}-alpine
 
 COPY --from=gossha /go/bin/GoSSHa /usr/local/bin/GoSSHa
 
@@ -19,7 +21,7 @@ RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/reposito
     && apk add --no-cache --upgrade grep git openssh-client ca-certificates \
     && apk del build-deps
 
-COPY key /root/.ssh/id_rsa
+COPY id_rsa /root/.ssh/id_rsa
 
 RUN chmod 700 /root/.ssh \
     && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > /root/.ssh/config \
